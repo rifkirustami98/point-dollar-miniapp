@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Point Dollar</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .logo { font-size: 23px; font-weight: bold; }
+    .tag {
+      background: #173e35;
+      color: #55e0a5;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+    }
+    .balance {
+      background: linear-gradient(135deg,#245bd2,#5136a9);
+      padding: 23px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+    }
+    .muted { color: #aab9d2; font-size: 13px; }
+    .amount { font-size: 34px; font-weight: bold; margin: 12px 0; }
+    .card {
+      background: #1c293c;
+      padding: 18px;
+      border-radius: 16px;
+      margin-bottom: 14px;
+    }
+    h3 { margin: 0 0 9px; }
+    p { color: #b6c4d8; font-size: 13px; line-height: 1.5; }
+    button {
+      border: 0;
+      border-radius: 11px;
+      padding: 14px;
+      width: 100%;
+      background: #3478f6;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+    button.secondary { background: #293a53; }
+    button:active { opacity: .75; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .status {
+      font-size: 11px;
+      color: #f5cf77;
+      margin-top: 12px;
+    }
+    footer {
+      text-align: center;
+      color: #788ba7;
+      font-size: 11px;
+      margin-top: 28px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">💰 Point Dollar</div>
+    <div class="tag">● MEMBER</div>
+  </div>
+
+  <div class="balance">
+    <div class="muted">TOTAL SALDO POIN</div>
+    <div class="amount">0 PTS</div>
+    <div class="muted">Saldo demo · Belum dapat ditarik</div>
+  </div>
+
+  <div class="card">
+    <h3>👋 Selamat datang!</h3>
+    <p id="welcome">Selamat datang di Point Dollar.</p>
+    <p>Kumpulkan poin melalui aktivitas yang tersedia.</p>
+  </div>
+
+  <div class="card">
+    <h3>📺 Tonton Iklan</h3>
+    <p>Tonton iklan yang tersedia dan dapatkan poin setelah penyelesaian berhasil diverifikasi.</p>
+    <button onclick="comingSoon()">TONTON IKLAN</button>
+    <div class="status">Iklan belum terhubung ke Adsun.</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🎁 Bonus Harian</h3>
+      <p>Bonus poin harian.</p>
+      <button class="secondary" onclick="comingSoon()">Klaim</button>
+    </div>
+
+    <div class="card">
+      <h3>👥 Referral</h3>
+      <p>Undang teman bergabung.</p>
+      <button class="secondary" onclick="comingSoon()">Undang</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💵 Penarikan USDT</h3>
+    <p>Fitur penarikan akan aktif setelah sistem saldo dan pembayaran selesai dibuat.</p>
+    <button class="secondary" onclick="comingSoon()">Tarik Saldo</button>
+  </div>
+
+  <div class="card">
+    <h3>📋 Riwayat Aktivitas</h3>
+    <p>Belum ada aktivitas.</p>
+  </div>
+
+  <footer>
+    POINT DOLLAR © 2026<br>
+    Earn points through verified activities.
+  </footer>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+
+    if (tg) {
+      tg.ready();
+      tg.expand();
+
+      const user = tg.initDataUnsafe?.user;
+      if (user?.first_name) {
+        document.getElementById("welcome").textContent =
+          "Halo, " + user.first_name + "! Selamat datang di Point Dollar.";
+      }
+    }
+
+    function comingSoon() {
+      if (tg) {
+        tg.showAlert("Fitur sedang dalam tahap pembangunan.");
+      } else {
+        alert("Fitur sedang dalam tahap pembangunan.");
+      }
+    }
+  </script>
+
+</body>
+</html>
