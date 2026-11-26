@@ -132,28 +132,69 @@
     Earn points through verified activities.
   </footer>
 
-  <script>
-    const tg = window.Telegram?.WebApp;
+ 
+   <script>
+  const tg = window.Telegram?.WebApp;
 
+  if (tg) {
+    tg.ready();
+    tg.expand();
+
+    const user = tg.initDataUnsafe?.user;
+
+    if (user?.first_name) {
+      document.getElementById("welcome").textContent =
+        "Halo, " + user.first_name + "! Selamat datang di Point Dollar.";
+    }
+  }
+
+  function comingSoon() {
     if (tg) {
-      tg.ready();
-      tg.expand();
+      tg.showAlert("Fitur sedang dalam tahap pembangunan.");
+    } else {
+      alert("Fitur sedang dalam tahap pembangunan.");
+    }
+  }
 
-      const user = tg.initDataUnsafe?.user;
-      if (user?.first_name) {
-        document.getElementById("welcome").textContent =
-          "Halo, " + user.first_name + "! Selamat datang di Point Dollar.";
-      }
+  async function connectPointDollar() {
+    const amount = document.querySelector(".Amount");
+
+    if (!tg || !tg.initData) {
+      console.log("Buka aplikasi melalui Telegram.");
+      return;
     }
 
-    function comingSoon() {
-      if (tg) {
-        tg.showAlert("Fitur sedang dalam tahap pembangunan.");
-      } else {
-        alert("Fitur sedang dalam tahap pembangunan.");
+    try {
+      const response = await fetch("/api/telegram", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          initData: tg.initData
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Koneksi gagal");
       }
+
+      if (amount) {
+        amount.textContent =
+          Number(result.user.points || 0).toLocaleString("id-ID") + " PTS";
+      }
+
+      console.log("Point Dollar berhasil terhubung.");
+    } catch (error) {
+      console.error("Koneksi Point Dollar gagal:", error);
     }
-  </script>
+  }
+
+  connectPointDollar();
+</script>
+  
 
 </body>
 </html>
