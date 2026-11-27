@@ -106,7 +106,7 @@
     <div class="card">
       <h3>🎁 Bonus Harian</h3>
       <p>Bonus poin harian.</p>
-      <button class="secondary" onclick="comingSoon()">Klaim</button>
+      <button class="secondary" onclick="claimDailyBonus()">Klaim</button>
     </div>
 
     <div class="card">
@@ -157,7 +157,7 @@
   }
 
   async function connectPointDollar() {
-    const amount = document.querySelector(".Amount");
+    const amount = document.querySelector(".amount");
 
     if (!tg || !tg.initData) {
       console.log("Buka aplikasi melalui Telegram.");
@@ -191,7 +191,38 @@
       console.error("Koneksi Point Dollar gagal:", error);
     }
   }
+async function claimDailyBonus() {
+  if (!tg || !tg.initData) {
+    alert("Buka aplikasi melalui Telegram.");
+    return;
+  }
 
+  try {
+    const response = await fetch("/api/daily-bonus", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ initData: tg.initData })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Klaim bonus gagal");
+    }
+
+    const amount = document.querySelector(".amount");
+
+    if (amount) {
+      amount.textContent =
+        Number(result.points || 0).toLocaleString("id-ID") + " PTS";
+    }
+
+    tg.showAlert(result.message);
+  } catch (error) {
+    console.error("Bonus harian gagal:", error);
+    tg.showAlert("Gagal mengklaim bonus. Silakan coba lagi.");
+  }
+}
   connectPointDollar();
 </script>
   
